@@ -47,8 +47,10 @@ const config = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.d.ts'],
-    modules: [path.resolve('./src'), path.resolve('node_modules')],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   plugins: [
     new webpack.DefinePlugin({

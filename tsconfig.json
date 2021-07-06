@@ -21,7 +21,7 @@
     "noUnusedLocals": true,
     "outDir": "./tsOutputThatShouldNotExist",
     "paths": {
-      "@*": ["./src/*"],
+      "@/*": ["src/*"],
     },
     "resolveJsonModule": true,
     "sourceMap": true,

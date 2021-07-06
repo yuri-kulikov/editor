@@ -17,9 +17,6 @@
     "deploy": "gh-pages -d build",
     "start": "webpack serve"
   },
-  "_moduleAliases": {
-    "@": "."
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -36,6 +33,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
+    "@fluentui/merge-styles": "^8.1.2",
     "@fluentui/react": "^8.22.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
