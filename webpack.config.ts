@@ -1,3 +1,5 @@
+import { styles } from '@ckeditor/ckeditor5-dev-utils';
+import CKEditorWebpackPlugin from '@ckeditor/ckeditor5-dev-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -44,15 +46,54 @@ const config = {
           },
         ],
       },
+      {
+        test: /\.svg$/,
+        use: ['raw-loader'],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              injectType: 'singletonStyleTag',
+              attributes: {
+                'data-cke': true,
+              },
+            },
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: styles.getPostCssConfig({
+                themeImporter: {
+                  themePath: require.resolve('@ckeditor/ckeditor5-theme-lark'),
+                },
+                minify: true,
+              }),
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
+    modules: [path.resolve('node_modules')],
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
   },
   plugins: [
+    new CKEditorWebpackPlugin({
+      // UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
+      // When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.js).
+      language: 'en',
+      additionalLanguages: 'all',
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(MODE),
