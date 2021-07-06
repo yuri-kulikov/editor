@@ -1,0 +1,83 @@
+{
+  "name": "editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "homepage": "http://yuri-kulikov.github.io/editor",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "cross-env NODE_ENV=development webpack",
+    "prebuild:prod": "npm run clean",
+    "build:prod": "cross-env NODE_ENV=production webpack",
+    "clean": "shx rm -rf ./build",
+    "dev-server": "cross-env NODE_ENV=development nodemon ./bin/Server.js",
+    "lint-fixup": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "predeploy": "npm run build:prod",
+    "deploy": "gh-pages -d build",
+    "start": "webpack serve"
+  },
+  "_moduleAliases": {
+    "@": "."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "nodemonConfig": {
+    "delay": 500,
+    "signal": "SIGHUP",
+    "watch": [
+      "./build"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "@fluentui/react": "^8.22.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/copy-webpack-plugin": "^8.0.0",
+    "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
+    "@types/gh-pages": "^3.0.0",
+    "@types/html-webpack-plugin": "^3.2.5",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^16.0.0",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
+    "@types/webpack": "^5.28.0",
+    "@types/webpack-dev-server": "^3.11.4",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-no-unsanitized": "^3.1.5",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-unused-imports": "^1.1.1",
+    "fork-ts-checker-webpack-plugin": "^6.2.12",
+    "gh-pages": "^3.2.3",
+    "html-webpack-plugin": "^5.3.2",
+    "lodash-ts-webpack-plugin": "^1.1.4",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.1",
+    "prettier-eslint": "^12.0.0",
+    "redux-devtools-extension": "^2.13.9",
+    "shx": "^0.3.3",
+    "simple-progress-webpack-plugin": "^2.0.0",
+    "source-map-loader": "^3.0.0",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4",
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "keyofStringsOnly": true,
+    "lib": [
+      "es2015",
+      "es2016",
+      "es2017",
+      "scripthost",
+      "dom",
+      "dom.iterable"
+    ],
+    "moduleResolution": "node",
+    "noErrorTruncation": true,
+    "noUnusedLocals": true,
+    "outDir": "./tsOutputThatShouldNotExist",
+    "paths": {
+      "@*": ["./src/*"],
+    },
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "target": "es2019",
+  },
+  "exclude": [
+    "node_modules",
+    "./build/**",
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "./webpack.config.ts",
+  ],
+  "typeRoots": [
+    "node_modules/@types",
+    "src/types"
+  ]
+}
