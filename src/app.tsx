@@ -1,12 +1,34 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { DefaultButton, PrimaryButton, ThemeProvider } from '@fluentui/react';
-import React from 'react';
+import {
+  DefaultButton,
+  PrimaryButton,
+  TextField,
+  ThemeProvider,
+} from '@fluentui/react';
+import React, { useState } from 'react';
 
 import { getClassNames } from './App.classNames';
 import Editor from './Editor';
 
+const editorConfig = {
+  toolbar: {
+    items: [
+      'bold',
+      'italic',
+      'bulletedList',
+      'numberedList',
+      'imageInsert',
+      'link',
+      'mediaEmbed',
+      'blockQuote',
+    ],
+  },
+  language: 'en',
+};
+
 const App: React.FC = () => {
   const { button } = getClassNames();
+  const [text, setText] = useState('');
 
   return (
     <ThemeProvider
@@ -17,35 +39,29 @@ const App: React.FC = () => {
     >
       <PrimaryButton className={button}>Button</PrimaryButton>
       <DefaultButton className={button}>Button</DefaultButton>
-      <div className="editor">
-        <CKEditor
-          editor={Editor}
-          data="<p>Hello from CKEditor 5!</p>"
-          config={{
-            toolbar: {
-              items: [
-                'bold',
-                'italic',
-                'bulletedList',
-                'numberedList',
-                'imageInsert',
-                'link',
-                'mediaEmbed',
-                'blockQuote',
-              ],
-            },
-            language: 'en',
-          }}
-          onReady={editor => {
-            // You can store the "editor" and use when it is needed.
-            console.log('Editor is ready to use!', editor);
-          }}
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            console.log({ event, editor, data });
-          }}
-        />
-      </div>
+      <CKEditor
+        editor={Editor}
+        data="<p>Hello from CKEditor 5!</p>"
+        config={editorConfig}
+        onReady={editor => {
+          console.log('Editor is ready to use!', editor);
+          const data = editor.getData();
+          setText(data);
+        }}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          console.log({ event, editor, data });
+          setText(data);
+        }}
+      />
+      <TextField
+        value={text}
+        readOnly={true}
+        multiline
+        resizable={false}
+        autoAdjustHeight
+        style={{ width: '100%', boxSizing: 'border-box' }}
+      />
     </ThemeProvider>
   );
 };

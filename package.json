@@ -44,6 +44,7 @@
     "@ckeditor/ckeditor5-image": "^28.0.0",
     "@ckeditor/ckeditor5-link": "^28.0.0",
     "@ckeditor/ckeditor5-list": "^28.0.0",
+    "@ckeditor/ckeditor5-markdown-gfm": "^29.0.0",
     "@ckeditor/ckeditor5-media-embed": "^28.0.0",
     "@ckeditor/ckeditor5-paragraph": "^28.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",

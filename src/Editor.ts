@@ -12,6 +12,7 @@ import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
+import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
@@ -27,12 +28,13 @@ class Editor extends ClassicEditor {}
   Essentials,
   Heading,
   Image,
-  ImageInsert,
   ImageCaption,
+  ImageInsert,
   ImageStyle,
   Italic,
   Link,
   List,
+  Markdown,
   MediaEmbed,
   Paragraph,
   TextTransformation,
