@@ -7,7 +7,6 @@ import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import Image from '@ckeditor/ckeditor5-image/src/image';
-import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import Link from '@ckeditor/ckeditor5-link/src/link';
@@ -16,6 +15,8 @@ import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
+
+import MyPlugin from './plugins/MyPlugin';
 
 class Editor extends ClassicEditor {}
 
@@ -28,7 +29,6 @@ class Editor extends ClassicEditor {}
   Essentials,
   Heading,
   Image,
-  ImageCaption,
   ImageInsert,
   ImageStyle,
   Italic,
@@ -36,6 +36,7 @@ class Editor extends ClassicEditor {}
   List,
   Markdown,
   MediaEmbed,
+  MyPlugin,
   Paragraph,
   TextTransformation,
 ];

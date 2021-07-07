@@ -1,10 +1,5 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-  DefaultButton,
-  PrimaryButton,
-  TextField,
-  ThemeProvider,
-} from '@fluentui/react';
+import { DefaultButton, PrimaryButton, TextField, ThemeProvider } from '@fluentui/react';
 import React, { useState } from 'react';
 
 import { getClassNames } from './App.classNames';
@@ -21,6 +16,7 @@ const editorConfig = {
       'link',
       'mediaEmbed',
       'blockQuote',
+      'myButton',
     ],
   },
   language: 'en',
@@ -60,7 +56,11 @@ const App: React.FC = () => {
         multiline
         resizable={false}
         autoAdjustHeight
-        style={{ width: '100%', boxSizing: 'border-box' }}
+        style={{
+          width: '100%',
+          boxSizing: 'border-box',
+          fontFamily: 'monospace',
+        }}
       />
     </ThemeProvider>
   );
