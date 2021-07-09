@@ -1,5 +1,13 @@
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { DefaultButton, PrimaryButton, TextField, ThemeProvider } from '@fluentui/react';
+import {
+  Panel,
+  PanelType,
+  PrimaryButton,
+  TextField,
+  ThemeProvider,
+} from '@fluentui/react';
+import { useBoolean } from '@fluentui/react-hooks';
 import React, { useState } from 'react';
 
 import { getClassNames } from './App.classNames';
@@ -8,41 +16,45 @@ import Editor from './Editor';
 const editorConfig = {
   toolbar: {
     items: [
+      'sourceEditing',
       'bold',
       'italic',
       'bulletedList',
       'numberedList',
-      'imageInsert',
       'link',
-      'mediaEmbed',
-      'blockQuote',
       'myButton',
+      'mediaEmbed',
+      'imageTextAlternative',
     ],
   },
   language: 'en',
 };
 
 const App: React.FC = () => {
-  const { button } = getClassNames();
+  const { button, panelText } = getClassNames();
   const [text, setText] = useState('');
+  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
+    useBoolean(false);
+  const togglePanel = isOpen ? dismissPanel : openPanel;
 
   return (
     <ThemeProvider
       style={{
         width: '100%',
-        height: '100%',
+        padding: 20,
       }}
     >
-      <PrimaryButton className={button}>Button</PrimaryButton>
-      <DefaultButton className={button}>Button</DefaultButton>
+      <PrimaryButton className={button} onClick={togglePanel}>
+        Toggle Panel
+      </PrimaryButton>
       <CKEditor
         editor={Editor}
-        data="<p>Hello from CKEditor 5!</p>"
         config={editorConfig}
-        onReady={editor => {
+        onReady={(editor: Editor) => {
+          editor.focus();
+          editor.setData('This is **bold**.');
           console.log('Editor is ready to use!', editor);
-          const data = editor.getData();
-          setText(data);
+          CKEditorInspector.attach(editor);
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
@@ -62,7 +74,19 @@ const App: React.FC = () => {
           fontFamily: 'monospace',
         }}
       />
+      <Panel
+        closeButtonAriaLabel="Close"
+        customWidth={'400px'}
+        headerText="Sample panel"
+        isBlocking={false}
+        isOpen={isOpen}
+        onDismiss={dismissPanel}
+        type={PanelType.custom}
+      >
+        <p className={panelText}>{text}</p>
+      </Panel>
     </ThemeProvider>
   );
 };
+
 export default App;

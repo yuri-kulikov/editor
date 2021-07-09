@@ -9,11 +9,14 @@ import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import Image from '@ckeditor/ckeditor5-image/src/image';
 import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
+import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative';
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
 import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
 
 import MyPlugin from './plugins/MyPlugin';
@@ -27,12 +30,15 @@ class Editor extends ClassicEditor {}
   BlockQuote,
   Bold,
   Essentials,
+  SourceEditing,
   Heading,
   Image,
   ImageInsert,
   ImageStyle,
   Italic,
   Link,
+  ImageTextAlternative,
+  ImageToolbar,
   List,
   Markdown,
   MediaEmbed,

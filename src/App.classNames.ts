@@ -1,15 +1,16 @@
 import { mergeStyleSets } from '@fluentui/merge-styles';
 import { FontSizes } from '@fluentui/react';
 
-export interface IComponentClassNames {
-  button: string;
-}
-
-export const getClassNames = (): IComponentClassNames => {
-  return mergeStyleSets({
+export const getClassNames = () =>
+  mergeStyleSets({
     button: {
-      width: 60,
+      width: 140,
       fontSize: FontSizes.small,
+      marginBottom: 16,
+    },
+    panelText: {
+      overflow: 'hidden',
+      whiteSpace: 'pre-wrap',
+      wordBreak: 'break-word',
     },
   });
-};

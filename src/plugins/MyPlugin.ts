@@ -20,7 +20,7 @@ class MyPlugin extends Plugin {
       const view = new ButtonView(locale);
 
       view.set({
-        label: 'myButton',
+        label: 'Insert Image',
         icon: imageIcon,
         tooltip: true,
       });
@@ -29,7 +29,6 @@ class MyPlugin extends Plugin {
       view.on('execute', () => {
         // eslint-disable-next-line no-alert
         const imageUrl = prompt('Image Url');
-        console.log('zzz imageURL:', imageUrl);
 
         editor.model.change(writer => {
           if (!imageUrl) {
