@@ -1,12 +1,6 @@
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-  Panel,
-  PanelType,
-  PrimaryButton,
-  TextField,
-  ThemeProvider,
-} from '@fluentui/react';
+import { Panel, PanelType, PrimaryButton, TextField, ThemeProvider } from '@fluentui/react';
 import { useBoolean } from '@fluentui/react-hooks';
 import React, { useState } from 'react';
 
@@ -23,8 +17,6 @@ const editorConfig = {
       'numberedList',
       'link',
       'myButton',
-      'mediaEmbed',
-      'imageTextAlternative',
     ],
   },
   language: 'en',

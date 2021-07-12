@@ -1,18 +1,11 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import imageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
-import Image from '@ckeditor/ckeditor5-image/src/image';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
-class MyPlugin extends Plugin {
-  static get pluginName() {
-    return 'MyPlugin';
-  }
-
-  static get requires() {
-    return [Image];
-  }
-
+export default class MyMediaUI extends Plugin {
   init() {
+    console.log('MyMediaUI#init() got called');
+
     const editor = this.editor;
     const modelDocument = editor.model.document;
 
@@ -35,7 +28,7 @@ class MyPlugin extends Plugin {
             return;
           }
 
-          const imageElement = writer.createElement('image', {
+          const imageElement = writer.createElement('myMedia', {
             src: imageUrl,
           });
 
@@ -53,5 +46,3 @@ class MyPlugin extends Plugin {
     });
   }
 }
-
-export default MyPlugin;
