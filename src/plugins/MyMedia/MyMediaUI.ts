@@ -2,6 +2,8 @@ import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import imageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
+import { SchemaItemName } from './MyMediaEditing';
+
 export default class MyMediaUI extends Plugin {
   init() {
     console.log('MyMediaUI#init() got called');
@@ -28,7 +30,7 @@ export default class MyMediaUI extends Plugin {
             return;
           }
 
-          const imageElement = writer.createElement('myMedia', {
+          const imageElement = writer.createElement(SchemaItemName.MyMedia, {
             src: imageUrl,
           });
 

@@ -16,6 +16,8 @@ const globalStyles: IStyle = {
     },
     ':global(.myImg.ck-widget)': {
       width: 'fit-content',
+      margin: 4,
+      padding: 4,
     },
   },
 };

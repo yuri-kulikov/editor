@@ -1,11 +1,15 @@
 import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import { Panel, PanelType, PrimaryButton, TextField, ThemeProvider } from '@fluentui/react';
-import { useBoolean } from '@fluentui/react-hooks';
-import React, { useState } from 'react';
+import { TextField, ThemeProvider } from '@fluentui/react';
+import React, { useRef, useState } from 'react';
 
-import { getClassNames } from './App.classNames';
+import SelectedImagePanel from './components/SelectedImagePanel';
+import { SelectedImageContext } from './context/SelectedImage';
 import Editor from './Editor';
+import Image from './models/Image';
+
+const initialText =
+  '<p>Hello</p><img class="myImg" alt="Alt text1" src="https://b.thumbs.redditmedia.com/B6T8MAxlEYwn27gmOAruEuEnFmP5qgkUZKnQQE8NMSI.png"><img class="myImg" src="https://zooawesome.com/wp-content/uploads/2019/08/Cat-Blep-Closeup.webp"><p>This is <strong>bold</strong>.</p>';
 
 const editorConfig = {
   toolbar: {
@@ -15,6 +19,7 @@ const editorConfig = {
       'italic',
       'bulletedList',
       'numberedList',
+      'imageTextAlternative',
       'link',
       'myButton',
     ],
@@ -23,11 +28,11 @@ const editorConfig = {
 };
 
 const App: React.FC = () => {
-  const { button, panelText } = getClassNames();
   const [text, setText] = useState('');
-  const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] =
-    useBoolean(false);
-  const togglePanel = isOpen ? dismissPanel : openPanel;
+  const editorRef = useRef<Editor>();
+
+  const [selectedImage, setSelectedImage] = useState<Maybe<Image>>();
+  const [panelDismissed, setPanelDismissed] = useState<boolean>(false);
 
   return (
     <ThemeProvider
@@ -36,47 +41,51 @@ const App: React.FC = () => {
         padding: 20,
       }}
     >
-      <PrimaryButton className={button} onClick={togglePanel}>
-        Toggle Panel
-      </PrimaryButton>
-      <CKEditor
-        editor={Editor}
-        config={editorConfig}
-        onReady={(editor: Editor) => {
-          editor.focus();
-          editor.setData('This is **bold**.');
-          console.log('Editor is ready to use!', editor);
-          CKEditorInspector.attach(editor);
+      <SelectedImageContext.Provider
+        value={{
+          selectedImage,
+          setSelectedImage,
+          panelDismissed,
+          setPanelDismissed,
         }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          console.log({ event, editor, data });
-          setText(data);
-        }}
-      />
-      <TextField
-        value={text}
-        readOnly={true}
-        multiline
-        resizable={false}
-        autoAdjustHeight
-        style={{
-          width: '100%',
-          boxSizing: 'border-box',
-          fontFamily: 'monospace',
-        }}
-      />
-      <Panel
-        closeButtonAriaLabel="Close"
-        customWidth={'400px'}
-        headerText="Sample panel"
-        isBlocking={false}
-        isOpen={isOpen}
-        onDismiss={dismissPanel}
-        type={PanelType.custom}
       >
-        <p className={panelText}>{text}</p>
-      </Panel>
+        <CKEditor
+          editor={Editor}
+          config={{
+            ...editorConfig,
+            selectedImage: {
+              setSelectedImage: (image: Maybe<Image>) => {
+                setSelectedImage(image);
+                setPanelDismissed(false);
+              },
+            },
+          }}
+          onReady={(editor: Editor) => {
+            editor.focus();
+            editor.setData(initialText);
+            console.log('Editor is ready to use!', editor);
+            CKEditorInspector.attach(editor);
+            editorRef.current = editor;
+          }}
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setText(data);
+          }}
+        />
+        <TextField
+          value={text}
+          readOnly={true}
+          multiline
+          resizable={false}
+          autoAdjustHeight
+          style={{
+            width: '100%',
+            boxSizing: 'border-box',
+            fontFamily: 'monospace',
+          }}
+        />
+        <SelectedImagePanel editor={editorRef.current} />
+      </SelectedImageContext.Provider>
     </ThemeProvider>
   );
 };

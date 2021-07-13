@@ -3,6 +3,7 @@ import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 
 import { myImgRenderer } from './myImgRenderer';
+import UpdateSelectedImage from './UpdateSelectedImage';
 
 export enum SchemaItemName {
   MyMedia = 'myMedia',
@@ -14,6 +15,41 @@ export default class MyMediaEditing extends Plugin {
 
     this._defineSchema();
     this._defineConverters();
+
+    this.editor.commands.add(
+      'updateSelectedImage',
+      new UpdateSelectedImage(this.editor),
+    );
+
+    const editor = this.editor;
+    // const view = editor.editing.view;
+    const editorModel = editor.model;
+    const modelDocument = editorModel.document;
+
+    const widgetTypeAroundPlugin = editor.plugins.get('WidgetTypeAround');
+
+    // Disable the widget type around plugin.
+    widgetTypeAroundPlugin.forceDisabled('MyApplication');
+
+    modelDocument.on('change', () => {
+      const selectedContent = editorModel
+        .getSelectedContent(modelDocument.selection)
+        .toJSON();
+
+      const setSelectedImage =
+        editor.config.get('selectedImage').setSelectedImage;
+
+      if (!Array.isArray(selectedContent) || selectedContent.length !== 1) {
+        setSelectedImage();
+        return;
+      }
+
+      const node = selectedContent[0];
+      if (node.name !== SchemaItemName.MyMedia) {
+        return;
+      }
+      setSelectedImage({ src: node.attributes.src, alt: node.attributes.alt });
+    });
   }
 
   private _defineSchema() {
@@ -31,6 +67,10 @@ export default class MyMediaEditing extends Plugin {
   }
 
   private _defineConverters() {
+    // model: <myMedia src="" alt="" />
+    // data: <img src="" alt="" class="myImg">
+    // editing: <section class="myImg"><Icon /></section>
+
     const editor = this.editor;
     const conversion = editor.conversion;
 
