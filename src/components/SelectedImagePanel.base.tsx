@@ -1,12 +1,4 @@
-import {
-  classNamesFunction,
-  IProcessedStyleSet,
-  Label,
-  Panel,
-  PanelType,
-  PrimaryButton,
-  TextField,
-} from '@fluentui/react';
+import { classNamesFunction, IProcessedStyleSet, Label, Panel, PanelType, PrimaryButton, TextField } from '@fluentui/react';
 import React, { useContext, useState } from 'react';
 
 import { EditorContext } from '@/context/Editor';
@@ -28,7 +20,15 @@ const getClassNames = classNamesFunction<
 
 export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
   props => {
+    const editor = useContext(EditorContext);
     const selectedImageContext = useContext(SelectedImageContext);
+
+    const [currentSrc, setCurrentSrc] = useState<string | undefined>(
+      selectedImageContext?.selectedImage?.src,
+    );
+    const [currentAlt, setCurrentAlt] = useState<string | undefined>(
+      selectedImageContext?.selectedImage?.alt,
+    );
 
     if (!selectedImageContext) {
       return null;
@@ -50,11 +50,6 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         theme: theme!,
       });
-
-    const editor = useContext(EditorContext);
-
-    const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
-    const [currentAlt, setCurrentAlt] = useState<string | undefined>(alt);
 
     const updateSelectedImage = ({ src, alt }: Partial<Image>) => {
       editor?.execute(MyMediaCommandName.UpdateSelectedImage, {
