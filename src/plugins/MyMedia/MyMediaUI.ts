@@ -2,14 +2,13 @@ import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import imageIcon from '@ckeditor/ckeditor5-core/theme/icons/image.svg';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 
-import { SchemaItemName } from './MyMediaEditing';
+import { MyMediaCommandName } from './MyMediaEditing';
 
 export default class MyMediaUI extends Plugin {
   init() {
     console.log('MyMediaUI#init() got called');
 
     const editor = this.editor;
-    const modelDocument = editor.model.document;
 
     editor.ui.componentFactory.add('myButton', locale => {
       const view = new ButtonView(locale);
@@ -20,29 +19,16 @@ export default class MyMediaUI extends Plugin {
         tooltip: true,
       });
 
-      // Callback executed once the image is clicked.
-      view.on('execute', () => {
-        // eslint-disable-next-line no-alert
-        const imageUrl = prompt('Image Url');
+      const command = editor.commands.get(MyMediaCommandName.InsertMyMedia);
+      if (!command) {
+        return;
+      }
 
-        editor.model.change(writer => {
-          if (!imageUrl) {
-            return;
-          }
+      view.bind('isEnabled').to(command as any);
 
-          const imageElement = writer.createElement(SchemaItemName.MyMedia, {
-            src: imageUrl,
-          });
-
-          // Inserting an image might've failed due to schema regulations.
-          if (imageElement.parent) {
-            writer.setSelection(imageElement, 'on');
-          }
-
-          // Insert the image in the current selection location.
-          editor.model.insertContent(imageElement, modelDocument.selection);
-        });
-      });
+      this.listenTo(view, 'execute', () =>
+        editor.execute(MyMediaCommandName.InsertMyMedia),
+      );
 
       return view;
     });

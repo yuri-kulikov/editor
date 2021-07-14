@@ -2,11 +2,17 @@ import { cleanObject } from '@/utils/cleanObject';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 
+import InsertMyMediaCommand from './InsertMyMedia';
 import { myImgRenderer } from './myImgRenderer';
 import UpdateSelectedImage from './UpdateSelectedImage';
 
 export enum SchemaItemName {
   MyMedia = 'myMedia',
+}
+
+export enum MyMediaCommandName {
+  UpdateSelectedImage = 'updateSeectedImage',
+  InsertMyMedia = 'insertMyMedia',
 }
 
 export default class MyMediaEditing extends Plugin {
@@ -17,8 +23,13 @@ export default class MyMediaEditing extends Plugin {
     this._defineConverters();
 
     this.editor.commands.add(
-      'updateSelectedImage',
+      MyMediaCommandName.UpdateSelectedImage,
       new UpdateSelectedImage(this.editor),
+    );
+
+    this.editor.commands.add(
+      MyMediaCommandName.InsertMyMedia,
+      new InsertMyMediaCommand(this.editor),
     );
 
     const editor = this.editor;
@@ -48,7 +59,12 @@ export default class MyMediaEditing extends Plugin {
       if (node.name !== SchemaItemName.MyMedia) {
         return;
       }
-      setSelectedImage({ src: node.attributes.src, alt: node.attributes.alt });
+
+      setSelectedImage({
+        src: node.attributes?.src,
+        alt: node.attributes?.alt,
+        path: JSON.stringify(modelDocument.selection.getFirstPosition()?.path),
+      });
     });
   }
 
@@ -118,9 +134,7 @@ export default class MyMediaEditing extends Plugin {
           {
             class: 'myImg__react-wrapper',
           },
-          domElement => {
-            myImgRenderer(domElement);
-          },
+          myImgRenderer,
         );
 
         viewWriter.insert(

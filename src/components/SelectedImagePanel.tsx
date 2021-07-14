@@ -1,44 +1,73 @@
-import { Panel, PanelType, TextField } from '@fluentui/react';
-import React, { useContext } from 'react';
+import {
+  Label,
+  Panel,
+  PanelType,
+  PrimaryButton,
+  TextField,
+} from '@fluentui/react';
+import React, { useContext, useState } from 'react';
 
+import { EditorContext } from '@/context/Editor';
 import { SelectedImageContext } from '@/context/SelectedImage';
-import Editor from '@/Editor';
 import Image from '@/models/Image';
+import { MyMediaCommandName } from '@/plugins/MyMedia/MyMediaEditing';
 
 import { getClassNames } from './SelectedImagePanel.classNames';
 
 const classNames = getClassNames();
 
-interface Props {
-  editor: Maybe<Editor>;
-}
-
-const SelectedImagePanel: React.FC<Props> = ({ editor }) => {
+const SelectedImagePanel: React.FC = () => {
   const selectedImageContext = useContext(SelectedImageContext);
+
   if (!selectedImageContext) {
     return null;
   }
   const { selectedImage, panelDismissed, setPanelDismissed } =
     selectedImageContext;
-  if (!selectedImageContext || !selectedImage) {
+  if (!selectedImage) {
     return null;
   }
-  const { src, alt } = selectedImage;
+  const { src, alt, path } = selectedImage;
 
-  if (!src || panelDismissed) {
+  if (!path || panelDismissed) {
     return null;
   }
 
-  const changeSelectedImage = ({ src, alt }: Partial<Image>) => {
-    editor?.execute('updateSelectedImage', {
+  const editor = useContext(EditorContext);
+
+  const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
+  const [currentAlt, setCurrentAlt] = useState<string | undefined>(alt);
+
+  const updateSelectedImage = ({ src, alt }: Partial<Image>) => {
+    editor?.execute(MyMediaCommandName.UpdateSelectedImage, {
       src,
       alt,
     });
   };
 
+  const onSave = () => {
+    updateSelectedImage({
+      src: currentSrc,
+      alt: currentAlt,
+    });
+    setPanelDismissed(true);
+  };
+
+  const onRenderFooterContent = () => (
+    <div>
+      <PrimaryButton
+        disabled={!currentSrc}
+        onClick={onSave}
+        style={{ width: '100%' }}
+      >
+        Save
+      </PrimaryButton>
+    </div>
+  );
+
   return (
     <Panel
-      key={selectedImage.src}
+      key={selectedImage.path}
       closeButtonAriaLabel="Close"
       customWidth={'400px'}
       headerText="Image settings"
@@ -46,18 +75,26 @@ const SelectedImagePanel: React.FC<Props> = ({ editor }) => {
       isOpen={!!selectedImage}
       type={PanelType.custom}
       onDismiss={() => setPanelDismissed(true)}
+      onRenderFooterContent={onRenderFooterContent}
+      isFooterAtBottom={true}
     >
       <TextField
         label="Source"
         defaultValue={src}
-        onChange={(_, src) => changeSelectedImage({ src })}
+        onChange={(_, src) => setCurrentSrc(src)}
       />
       <TextField
         label="Alt Text"
         defaultValue={alt || ''}
-        onChange={(_, alt) => changeSelectedImage({ alt })}
+        onChange={(_, alt) => setCurrentAlt(alt)}
       />
-      <img className={classNames.image} src={selectedImage.src} />
+      <Label>Image Preview</Label>
+      <img
+        key={selectedImage.src}
+        className={classNames.image}
+        src={currentSrc}
+        alt={currentAlt}
+      />
     </Panel>
   );
 };

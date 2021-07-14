@@ -8,6 +8,7 @@ import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import List from '@ckeditor/ckeditor5-list/src/list';
+import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation';
@@ -20,8 +21,6 @@ import MyMedia from './plugins/MyMedia';
 // import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 // import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative';
 // import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-// import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown';
-
 class Editor extends ClassicEditor {}
 
 // Plugins to include in the build.
@@ -42,7 +41,7 @@ class Editor extends ClassicEditor {}
   // ImageStyle,
   // ImageTextAlternative,
   // ImageToolbar,
-  // Markdown,
+  Markdown,
   // MediaEmbed,
   TextTransformation,
   MyMedia,
