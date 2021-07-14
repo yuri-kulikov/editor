@@ -37,11 +37,6 @@ export default class MyMediaEditing extends Plugin {
     const editorModel = editor.model;
     const modelDocument = editorModel.document;
 
-    const widgetTypeAroundPlugin = editor.plugins.get('WidgetTypeAround');
-
-    // Disable the widget type around plugin.
-    widgetTypeAroundPlugin.forceDisabled('MyApplication');
-
     modelDocument.on('change', () => {
       const selectedContent = editorModel
         .getSelectedContent(modelDocument.selection)
