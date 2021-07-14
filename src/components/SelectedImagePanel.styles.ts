@@ -1,12 +1,9 @@
-import {
-  ISelectedImagePanelStyleProps,
-  ISelectedImagePanelStyles,
-} from './SelectedImagePanel.types';
+import { ISelectedImagePanelStyleProps, ISelectedImagePanelStyles } from './SelectedImagePanel.types';
 
 export const getStyles = (
   props: ISelectedImagePanelStyleProps,
 ): ISelectedImagePanelStyles => {
-  const { className } = props;
+  const { className, theme } = props;
 
   return {
     root: [
@@ -26,8 +23,11 @@ export const getStyles = (
     button: [{ flexBasis: 0, flexGrow: 1 }],
     removeButton: [
       {
-        backgroundColor: 'crimson',
+        backgroundColor: theme.palette.red,
         border: 'none',
+        selectors: {
+          ':hover': { border: 'none', backgroundColor: theme.palette.redDark },
+        },
       },
     ],
   };
