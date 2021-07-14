@@ -54,13 +54,26 @@ const SelectedImagePanel: React.FC = () => {
   };
 
   const onRenderFooterContent = () => (
-    <div>
+    <div style={{ display: 'flex', gap: '4px' }}>
       <PrimaryButton
         disabled={!currentSrc}
         onClick={onSave}
-        style={{ width: '100%' }}
+        style={{ flexBasis: 0, flexGrow: 1 }}
       >
         Save
+      </PrimaryButton>
+      <PrimaryButton
+        onClick={() => {
+          editor?.execute('delete');
+        }}
+        style={{
+          flexBasis: 0,
+          flexGrow: 1,
+          backgroundColor: 'crimson',
+          border: 'none',
+        }}
+      >
+        Remove Image
       </PrimaryButton>
     </div>
   );
