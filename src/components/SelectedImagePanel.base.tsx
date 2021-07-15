@@ -1,9 +1,21 @@
-import { classNamesFunction, IProcessedStyleSet, Label, Panel, PanelType, PrimaryButton, TextField } from '@fluentui/react';
+import {
+  classNamesFunction,
+  Icon,
+  Image,
+  ImageLoadState,
+  IProcessedStyleSet,
+  Label,
+  Link,
+  Panel,
+  PanelType,
+  PrimaryButton,
+  TextField,
+} from '@fluentui/react';
 import React, { useContext, useState } from 'react';
 
 import { EditorContext } from '@/context/Editor';
 import { SelectedImageContext } from '@/context/SelectedImage';
-import Image from '@/models/Image';
+import MyImage from '@/models/MyImage';
 import { MyMediaCommandName } from '@/plugins/MyMedia/MyMediaEditing';
 import cx from '@/utils/classNames';
 
@@ -30,6 +42,8 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
       selectedImageContext?.selectedImage?.alt,
     );
 
+    const [imageState, setImageState] = useState(ImageLoadState.notLoaded);
+
     if (!selectedImageContext) {
       return null;
     }
@@ -51,7 +65,7 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
         theme: theme!,
       });
 
-    const updateSelectedImage = ({ src, alt }: Partial<Image>) => {
+    const updateSelectedImage = ({ src, alt }: Partial<MyImage>) => {
       editor?.execute(MyMediaCommandName.UpdateSelectedImage, {
         src,
         alt,
@@ -110,12 +124,32 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
           onChange={(_, alt) => setCurrentAlt(alt)}
         />
         <Label>Image Preview</Label>
-        <img
-          key={selectedImage.src}
-          className={classNames.image}
-          src={currentSrc}
-          alt={currentAlt}
-        />
+        {!!currentSrc && (
+          <Image
+            alt={currentAlt}
+            className={classNames.image}
+            key={selectedImage.src}
+            src={currentSrc}
+            width={'fit-content'}
+            onLoadingStateChange={setImageState}
+            style={
+              imageState === ImageLoadState.error ? { display: 'none' } : {}
+            }
+          />
+        )}
+        {!!currentSrc && imageState === ImageLoadState.loaded && (
+          <Link target={'_blank'} href={currentSrc}>
+            Open image in a new window
+          </Link>
+        )}
+        {!!currentSrc && imageState === ImageLoadState.error && (
+          <div className={classNames.errorContainer}>
+            <Icon iconName={'ErrorBadge'} className={classNames.errorIcon} />
+            <span className={classNames.errorMessage}>
+              Couldn't load the image
+            </span>
+          </div>
+        )}
       </Panel>
     );
   };

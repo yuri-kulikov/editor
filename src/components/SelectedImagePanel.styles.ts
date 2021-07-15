@@ -30,5 +30,17 @@ export const getStyles = (
         },
       },
     ],
+    errorContainer: {
+      margin: 8,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '6px',
+    },
+    errorIcon: {
+      fontSize: '60px',
+      color: theme.palette.red,
+    },
+    errorMessage: { color: theme.palette.red, fontWeight: 'bold' },
   };
 };

@@ -19,4 +19,7 @@ export interface ISelectedImagePanelStyles {
   footerButtonsContainer?: IStyle;
   button?: IStyle;
   removeButton?: IStyle;
+  errorContainer?: IStyle;
+  errorIcon?: IStyle;
+  errorMessage?: IStyle;
 }

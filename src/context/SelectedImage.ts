@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Image from '@/models/Image';
+import MyImage from '@/models/MyImage';
 
 interface SelectedImageContextState {
-  selectedImage: Maybe<Image>;
-  setSelectedImage(image: Maybe<Image>): void;
+  selectedImage: Maybe<MyImage>;
+  setSelectedImage(image: Maybe<MyImage>): void;
   panelDismissed: boolean;
   setPanelDismissed(dismissed: boolean): void;
 }

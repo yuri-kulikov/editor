@@ -7,14 +7,14 @@ import { SelectedImagePanel } from '@/components/SelectedImagePanel';
 import { EditorContext } from '@/context/Editor';
 import { SelectedImageContext } from '@/context/SelectedImage';
 import Editor from '@/Editor';
-import Image from '@/models/Image';
+import MyImage from '@/models/MyImage';
 
 import { IAppProps, IAppStyleProps, IAppStyles } from './App.types';
 
 const getClassNames = classNamesFunction<IAppStyleProps, IAppStyles>();
 
 const initialText =
-  '<p>Hello</p><img class="myImg" alt="Alt text!" src="https://b.thumbs.redditmedia.com/B6T8MAxlEYwn27gmOAruEuEnFmP5qgkUZKnQQE8NMSI.png"><img class="myImg" src="https://zooawesome.com/wp-content/uploads/2019/08/Cat-Blep-Closeup.webp"><p>This is <strong>bold</strong>.</p>';
+  '<p>Hello</p><img class="myImg" alt="Alt text!" src="https://b.thumbs.redditmedia.com/B6T8MAxlEYwn27gmOAruEuEnFmP5qgkUZKnQQE8NMSI.png"><img class="myImg" src="https://zooawesome.com/wp-content/uploads/2019/08/Cat-Blep-Closeup.webp"><img class="myImg" alt="Gif" src="https://cloudinary-res.cloudinary.com/image/upload/c_limit,w_770/f_auto,fl_lossy,q_auto/Mario_1.gif"><p>This is <strong>bold</strong>.</p>';
 
 const editorConfig = {
   toolbar: {
@@ -38,7 +38,7 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
   const [text, setText] = useState('');
   const editorRef = useRef<Editor>();
 
-  const [selectedImage, setSelectedImage] = useState<Maybe<Image>>();
+  const [selectedImage, setSelectedImage] = useState<Maybe<MyImage>>();
   const [panelDismissed, setPanelDismissed] = useState<boolean>(false);
 
   return (
@@ -57,7 +57,7 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
             config={{
               ...editorConfig,
               selectedImage: {
-                setSelectedImage: (image: Maybe<Image>) => {
+                setSelectedImage: (image: Maybe<MyImage>) => {
                   setSelectedImage(image);
                   setPanelDismissed(false);
                 },
