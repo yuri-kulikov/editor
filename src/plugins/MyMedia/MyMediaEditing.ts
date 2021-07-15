@@ -42,11 +42,10 @@ export default class MyMediaEditing extends Plugin {
         .getSelectedContent(modelDocument.selection)
         .toJSON();
 
-      const setSelectedImage =
-        editor.config.get('selectedImage').setSelectedImage;
+      const onMyImageSelect = editor.config.get('myMedia').onMyImageSelect;
 
       if (!Array.isArray(selectedContent) || selectedContent.length !== 1) {
-        setSelectedImage();
+        onMyImageSelect();
         return;
       }
 
@@ -55,7 +54,7 @@ export default class MyMediaEditing extends Plugin {
         return;
       }
 
-      setSelectedImage({
+      onMyImageSelect({
         src: node.attributes?.src,
         alt: node.attributes?.alt,
         path: JSON.stringify(modelDocument.selection.getFirstPosition()?.path),
@@ -124,12 +123,14 @@ export default class MyMediaEditing extends Plugin {
           class: 'myImg',
         });
 
+        const onMyImageClick = editor.config.get('myMedia').onMyImageClick;
+
         const reactWrapper = viewWriter.createRawElement(
           'div',
           {
             class: 'myImg__react-wrapper',
           },
-          myImgRenderer,
+          domElement => myImgRenderer(domElement, onMyImageClick),
         );
 
         viewWriter.insert(

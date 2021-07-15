@@ -56,11 +56,12 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
             editor={Editor}
             config={{
               ...editorConfig,
-              selectedImage: {
-                setSelectedImage: (image: Maybe<MyImage>) => {
+              myMedia: {
+                onMyImageSelect: (image: Maybe<MyImage>) => {
                   setSelectedImage(image);
                   setPanelDismissed(false);
                 },
+                onMyImageClick: () => setPanelDismissed(false),
               },
             }}
             onReady={(editor: Editor) => {
