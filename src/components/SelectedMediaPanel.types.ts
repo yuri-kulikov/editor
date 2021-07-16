@@ -1,19 +1,19 @@
 import { IStyle, IStyleFunctionOrObject, ITheme } from '@fluentui/react';
 
-export interface ISelectedImagePanelProps {
+export interface ISelectedMediaPanelProps {
   theme?: ITheme;
   styles?: IStyleFunctionOrObject<
-    ISelectedImagePanelStyleProps,
-    ISelectedImagePanelStyles
+    ISelectedMediaPanelStyleProps,
+    ISelectedMediaPanelStyles
   >;
 }
 
-export interface ISelectedImagePanelStyleProps {
+export interface ISelectedMediaPanelStyleProps {
   theme: ITheme;
   className?: string;
 }
 
-export interface ISelectedImagePanelStyles {
+export interface ISelectedMediaPanelStyles {
   root?: IStyle;
   image?: IStyle;
   footerButtonsContainer?: IStyle;

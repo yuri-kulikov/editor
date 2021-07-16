@@ -14,32 +14,32 @@ import {
 import React, { useContext, useState } from 'react';
 
 import { EditorContext } from '@/context/Editor';
-import { SelectedImageContext } from '@/context/SelectedImage';
-import MyImage from '@/models/MyImage';
+import { SelectedMediaContext } from '@/context/SelectedMedia';
+import MyMedia from '@/models/MyMedia';
 import { MyMediaCommandName } from '@/plugins/MyMedia/MyMediaEditing';
 import cx from '@/utils/classNames';
 
 import {
-  ISelectedImagePanelProps,
-  ISelectedImagePanelStyleProps,
-  ISelectedImagePanelStyles,
-} from './SelectedImagePanel.types';
+  ISelectedMediaPanelProps,
+  ISelectedMediaPanelStyleProps,
+  ISelectedMediaPanelStyles,
+} from './SelectedMediaPanel.types';
 
 const getClassNames = classNamesFunction<
-  ISelectedImagePanelStyleProps,
-  ISelectedImagePanelStyles
+  ISelectedMediaPanelStyleProps,
+  ISelectedMediaPanelStyles
 >();
 
-export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
+export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> =
   props => {
     const editor = useContext(EditorContext);
-    const selectedImageContext = useContext(SelectedImageContext);
+    const selectedImageContext = useContext(SelectedMediaContext);
 
     const [currentSrc, setCurrentSrc] = useState<string | undefined>(
-      selectedImageContext?.selectedImage?.src,
+      selectedImageContext?.selectedMedia?.src,
     );
     const [currentAlt, setCurrentAlt] = useState<string | undefined>(
-      selectedImageContext?.selectedImage?.alt,
+      selectedImageContext?.selectedMedia?.alt,
     );
 
     const [imageState, setImageState] = useState(ImageLoadState.notLoaded);
@@ -47,8 +47,11 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
     if (!selectedImageContext) {
       return null;
     }
-    const { selectedImage, panelDismissed, setPanelDismissed } =
-      selectedImageContext;
+    const {
+      selectedMedia: selectedImage,
+      panelDismissed,
+      setPanelDismissed,
+    } = selectedImageContext;
     if (!selectedImage) {
       return null;
     }
@@ -59,13 +62,13 @@ export const SelectedImagePanelBase: React.FC<ISelectedImagePanelProps> =
     }
 
     const { styles, theme } = props;
-    const classNames: IProcessedStyleSet<ISelectedImagePanelStyles> =
+    const classNames: IProcessedStyleSet<ISelectedMediaPanelStyles> =
       getClassNames(styles, {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         theme: theme!,
       });
 
-    const updateSelectedImage = ({ src, alt }: Partial<MyImage>) => {
+    const updateSelectedImage = ({ src, alt }: Partial<MyMedia>) => {
       editor?.execute(MyMediaCommandName.UpdateSelectedImage, {
         src,
         alt,

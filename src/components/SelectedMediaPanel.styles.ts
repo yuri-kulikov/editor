@@ -1,8 +1,8 @@
-import { ISelectedImagePanelStyleProps, ISelectedImagePanelStyles } from './SelectedImagePanel.types';
+import { ISelectedMediaPanelStyleProps, ISelectedMediaPanelStyles } from './SelectedMediaPanel.types';
 
 export const getStyles = (
-  props: ISelectedImagePanelStyleProps,
-): ISelectedImagePanelStyles => {
+  props: ISelectedMediaPanelStyleProps,
+): ISelectedMediaPanelStyles => {
   const { className, theme } = props;
 
   return {

@@ -152,8 +152,8 @@ export default class MyMediaEditing extends Plugin {
       },
     } as any);
 
-    // model: <myVideo src="" alt="" videoUrl="" />
-    // data: <img src="" alt="" previewImg="" class="myVideo">
+    // model: <myVideo previewUrl="" alt="" videoUrl="" />
+    // data: <img src="" alt="" preview="" class="myVideo">
     // editing: <section class="myVideo"><Icon /></section>
 
     // <myVideo> converters ((data) view → model)
@@ -165,12 +165,12 @@ export default class MyMediaEditing extends Plugin {
       model: (viewElement, { writer: modelWriter }) => {
         const src = viewElement.getAttribute('src');
         const alt = viewElement.getAttribute('alt');
-        const previewImg = viewElement.getAttribute('previewImg');
+        const preview = viewElement.getAttribute('preview');
 
         return modelWriter.createElement(
           SchemaItemName.MyVideo,
           cleanObject({
-            src: previewImg,
+            previewUrl: preview,
             alt,
             videoUrl: src,
           }),
@@ -188,7 +188,7 @@ export default class MyMediaEditing extends Plugin {
             class: 'myVideo',
             src: modelElement.getAttribute('videoUrl'),
             alt: modelElement.getAttribute('alt'),
-            previewImg: modelElement.getAttribute('src'),
+            preview: modelElement.getAttribute('previewUrl'),
           }),
         ),
     } as any);

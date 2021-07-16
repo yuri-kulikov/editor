@@ -3,18 +3,18 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { classNamesFunction, TextField, ThemeProvider } from '@fluentui/react';
 import React, { useRef, useState } from 'react';
 
-import { SelectedImagePanel } from '@/components/SelectedImagePanel';
+import { SelectedMediaPanel } from '@/components/SelectedMediaPanel';
 import { EditorContext } from '@/context/Editor';
-import { SelectedImageContext } from '@/context/SelectedImage';
+import { SelectedMediaContext } from '@/context/SelectedMedia';
 import Editor from '@/Editor';
-import MyImage from '@/models/MyImage';
+import MyMedia from '@/models/MyMedia';
 
 import { IAppProps, IAppStyleProps, IAppStyles } from './App.types';
 
 const getClassNames = classNamesFunction<IAppStyleProps, IAppStyles>();
 
 const initialText =
-  '<p>Hello</p><img class="myImg" alt="Alt text!" src="https://b.thumbs.redditmedia.com/B6T8MAxlEYwn27gmOAruEuEnFmP5qgkUZKnQQE8NMSI.png"><img class="myImg" src="https://zooawesome.com/wp-content/uploads/2019/08/Cat-Blep-Closeup.webp"><img class="myImg" alt="Gif" src="https://cloudinary-res.cloudinary.com/image/upload/c_limit,w_770/f_auto,fl_lossy,q_auto/Mario_1.gif"><p>This is <strong>bold</strong>.</p>';
+  '<p>Hello</p><img class="myImg" alt="Alt text!" src="https://b.thumbs.redditmedia.com/B6T8MAxlEYwn27gmOAruEuEnFmP5qgkUZKnQQE8NMSI.png"><img class="myVideo" alt="text" src="https://www.youtube.com/watch?v=dQw4w9WgXcQ" preview="https://img.youtube.com/vi/dQw4w9WgXcQ/default.jpg"><img class="myImg" src="https://zooawesome.com/wp-content/uploads/2019/08/Cat-Blep-Closeup.webp"><img class="myImg" alt="Gif" src="https://cloudinary-res.cloudinary.com/image/upload/c_limit,w_770/f_auto,fl_lossy,q_auto/Mario_1.gif"><p>This is <strong>bold</strong>.</p>';
 
 const editorConfig = {
   toolbar: {
@@ -38,16 +38,16 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
   const [text, setText] = useState('');
   const editorRef = useRef<Editor>();
 
-  const [selectedImage, setSelectedImage] = useState<Maybe<MyImage>>();
+  const [selectedMedia, setSelectedMedia] = useState<Maybe<MyMedia>>();
   const [panelDismissed, setPanelDismissed] = useState<boolean>(false);
 
   return (
     <ThemeProvider className={classNames.root}>
       <EditorContext.Provider value={editorRef.current}>
-        <SelectedImageContext.Provider
+        <SelectedMediaContext.Provider
           value={{
-            selectedImage,
-            setSelectedImage,
+            selectedMedia: selectedMedia,
+            setSelectedMedia: setSelectedMedia,
             panelDismissed,
             setPanelDismissed,
           }}
@@ -57,8 +57,8 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
             config={{
               ...editorConfig,
               myMedia: {
-                onMyImageSelect: (image: Maybe<MyImage>) => {
-                  setSelectedImage(image);
+                onMyImageSelect: (media: Maybe<MyMedia>) => {
+                  setSelectedMedia(media);
                   setPanelDismissed(false);
                 },
                 onMyImageClick: () => setPanelDismissed(false),
@@ -85,10 +85,10 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
             autoAdjustHeight
             className={classNames.dataPreview}
           />
-          {selectedImage && (
-            <SelectedImagePanel key={JSON.stringify(selectedImage)} />
+          {selectedMedia && (
+            <SelectedMediaPanel key={JSON.stringify(selectedMedia)} />
           )}
-        </SelectedImageContext.Provider>
+        </SelectedMediaContext.Provider>
       </EditorContext.Provider>
     </ThemeProvider>
   );
