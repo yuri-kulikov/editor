@@ -781,9 +781,9 @@
     "@types/ckeditor__ckeditor5-utils" "*"
 
 "@types/ckeditor__ckeditor5-engine@*":
-  version "28.0.1"
-  resolved "https://registry.yarnpkg.com/@types/ckeditor__ckeditor5-engine/-/ckeditor__ckeditor5-engine-28.0.1.tgz#8c72227eb8b7e8b28f788d838c22631ac5b65e54"
-  integrity sha512-JtLfGRGsO2T7I4/Sb/2RvCwMxW7Y2cXdvo8bptz9nA8StLEqAx/1xcljnZN1RbnVdQVUHxcbDQy76mfwvO/41A==
+  version "28.0.2"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor__ckeditor5-engine/-/ckeditor__ckeditor5-engine-28.0.2.tgz#1a8e912ae5f9f4438231ec7edcce7d2665d0731a"
+  integrity sha512-RZjH1mKQKGHl4mC8WvnWBT8VmHB92X5ZEXtATTs+KXpZwCwgwdwxYKrcmbsRVMSIw+SgqFm906uvciLzaL+GfQ==
   dependencies:
     "@types/ckeditor__ckeditor5-engine" "*"
     "@types/ckeditor__ckeditor5-utils" "*"

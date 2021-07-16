@@ -2,7 +2,7 @@ import { cleanObject } from '@/utils/cleanObject';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 
-import InsertMyMediaCommand from './InsertMyMedia';
+import { InsertMyImgCommand, InsertMyVideoCommand } from './InsertMyMedia';
 import { myImgRenderer, myVideoRenderer } from './renderers';
 import UpdateSelectedImage from './UpdateSelectedImage';
 
@@ -12,8 +12,9 @@ export enum SchemaItemName {
 }
 
 export enum MyMediaCommandName {
-  UpdateSelectedImage = 'updateSeectedImage',
-  InsertMyMedia = 'insertMyMedia',
+  UpdateSelectedImage = 'updateSelectedImage',
+  InsertMyImg = 'insertMyImg',
+  InsertMyVideo = 'insertMyVideo',
 }
 
 export default class MyMediaEditing extends Plugin {
@@ -29,8 +30,13 @@ export default class MyMediaEditing extends Plugin {
     );
 
     this.editor.commands.add(
-      MyMediaCommandName.InsertMyMedia,
-      new InsertMyMediaCommand(this.editor),
+      MyMediaCommandName.InsertMyImg,
+      new InsertMyImgCommand(this.editor),
+    );
+
+    this.editor.commands.add(
+      MyMediaCommandName.InsertMyVideo,
+      new InsertMyVideoCommand(this.editor),
     );
 
     const editor = this.editor;

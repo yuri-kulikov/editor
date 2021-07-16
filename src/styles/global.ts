@@ -14,7 +14,7 @@ const globalStyles: IStyle = {
       maxWidth: '1000px',
       width: '100%',
     },
-    ':global(.myImg.ck-widget)': {
+    ':global(.myImg.ck-widget, .myVideo.ck-widget)': {
       width: 'fit-content',
       margin: 4,
       padding: 4,

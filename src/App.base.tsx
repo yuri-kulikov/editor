@@ -26,7 +26,7 @@ const editorConfig = {
       'numberedList',
       'imageTextAlternative',
       'link',
-      'myButton',
+      'myMediaDropdown',
     ],
   },
   language: 'en',
