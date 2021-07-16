@@ -46,8 +46,8 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
       <EditorContext.Provider value={editorRef.current}>
         <SelectedMediaContext.Provider
           value={{
-            selectedMedia: selectedMedia,
-            setSelectedMedia: setSelectedMedia,
+            selectedMedia,
+            setSelectedMedia,
             panelDismissed,
             setPanelDismissed,
           }}
@@ -57,7 +57,8 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
             config={{
               ...editorConfig,
               myMedia: {
-                onMyImageSelect: (media: Maybe<MyMedia>) => {
+                onMyMediaSelect: (media?: Maybe<MyMedia>) => {
+                  console.log('zzz onMyMediaSelect:', media);
                   setSelectedMedia(media);
                   setPanelDismissed(false);
                 },

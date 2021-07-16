@@ -1,3 +1,4 @@
+import MyMedia, { MediaType } from '@/models/MyMedia';
 import { cleanObject } from '@/utils/cleanObject';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
@@ -48,23 +49,40 @@ export default class MyMediaEditing extends Plugin {
         .getSelectedContent(modelDocument.selection)
         .toJSON();
 
-      const onMyImageSelect = editor.config.get('myMedia').onMyImageSelect;
+      const onMyMediaSelect: (media?: Maybe<MyMedia>) => void =
+        editor.config.get('myMedia').onMyMediaSelect;
 
       if (!Array.isArray(selectedContent) || selectedContent.length !== 1) {
-        onMyImageSelect();
+        onMyMediaSelect();
         return;
       }
 
       const node = selectedContent[0];
-      if (node.name !== SchemaItemName.MyImg) {
+      if (
+        node.name !== SchemaItemName.MyImg &&
+        node.name !== SchemaItemName.MyVideo
+      ) {
         return;
       }
-
-      onMyImageSelect({
-        src: node.attributes?.src,
-        alt: node.attributes?.alt,
-        path: JSON.stringify(modelDocument.selection.getFirstPosition()?.path),
-      });
+      if (node.name === SchemaItemName.MyImg) {
+        onMyMediaSelect({
+          type: MediaType.Img,
+          src: node.attributes?.src,
+          alt: node.attributes?.alt,
+          path: JSON.stringify(
+            modelDocument.selection.getFirstPosition()?.path,
+          ),
+        });
+      } else if (node.name === SchemaItemName.MyVideo) {
+        onMyMediaSelect({
+          type: MediaType.Video,
+          src: node.attributes?.src,
+          alt: node.attributes?.alt,
+          path: JSON.stringify(
+            modelDocument.selection.getFirstPosition()?.path,
+          ),
+        });
+      }
     });
   }
 
@@ -82,7 +100,7 @@ export default class MyMediaEditing extends Plugin {
       isLimit: true,
       isObject: true,
       allowWhere: '$block',
-      allowAttributes: ['alt', 'src', 'videoUrl'],
+      allowAttributes: ['alt', 'src'],
     });
   }
 
@@ -152,8 +170,8 @@ export default class MyMediaEditing extends Plugin {
       },
     } as any);
 
-    // model: <myVideo previewUrl="" alt="" videoUrl="" />
-    // data: <img src="" alt="" preview="" class="myVideo">
+    // model: <myVideo alt="" src="" />
+    // data: <img src="" alt="" class="myVideo">
     // editing: <section class="myVideo"><Icon /></section>
 
     // <myVideo> converters ((data) view → model)
@@ -165,14 +183,12 @@ export default class MyMediaEditing extends Plugin {
       model: (viewElement, { writer: modelWriter }) => {
         const src = viewElement.getAttribute('src');
         const alt = viewElement.getAttribute('alt');
-        const preview = viewElement.getAttribute('preview');
 
         return modelWriter.createElement(
           SchemaItemName.MyVideo,
           cleanObject({
-            previewUrl: preview,
             alt,
-            videoUrl: src,
+            src,
           }),
         );
       },
@@ -186,9 +202,8 @@ export default class MyMediaEditing extends Plugin {
           'img',
           cleanObject({
             class: 'myVideo',
-            src: modelElement.getAttribute('videoUrl'),
+            src: modelElement.getAttribute('src'),
             alt: modelElement.getAttribute('alt'),
-            preview: modelElement.getAttribute('previewUrl'),
           }),
         ),
     } as any);

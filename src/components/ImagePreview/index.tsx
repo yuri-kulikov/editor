@@ -1,15 +1,12 @@
 import { Icon, Image, ImageLoadState, IProcessedStyleSet, Label, Link } from '@fluentui/react';
 import React from 'react';
 
-import MyMedia from '@/models/MyMedia';
-
 import { ISelectedMediaPanelStyles } from '../SelectedMediaPanel.types';
 
 interface Props {
   currentSrc: string | undefined;
   currentAlt: string | undefined;
   classNames: IProcessedStyleSet<ISelectedMediaPanelStyles>;
-  selectedImage: MyMedia;
   setImageState: React.Dispatch<React.SetStateAction<ImageLoadState>>;
   imageState: ImageLoadState;
 }
@@ -27,7 +24,6 @@ export const ImagePreview: React.FC<Props> = ({
   currentSrc,
   currentAlt,
   classNames,
-  selectedImage,
   setImageState,
   imageState,
 }) => {
@@ -37,7 +33,6 @@ export const ImagePreview: React.FC<Props> = ({
       <Image
         alt={currentAlt}
         className={classNames.image}
-        key={selectedImage.src}
         src={currentSrc}
         width={'fit-content'}
         onLoadingStateChange={setImageState}

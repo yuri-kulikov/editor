@@ -11,9 +11,10 @@ import React, { useContext, useState } from 'react';
 
 import { EditorContext } from '@/context/Editor';
 import { SelectedMediaContext } from '@/context/SelectedMedia';
-import MyMedia from '@/models/MyMedia';
+import MyMedia, { MediaType } from '@/models/MyMedia';
 import { MyMediaCommandName } from '@/plugins/MyMedia/MyMediaEditing';
 import cx from '@/utils/classNames';
+import { getPreviewImgByLink } from '@/utils/youtube';
 
 import { ImagePreview } from './ImagePreview';
 import {
@@ -46,15 +47,12 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
   if (!selectedImageContext) {
     return null;
   }
-  const {
-    selectedMedia: selectedImage,
-    panelDismissed,
-    setPanelDismissed,
-  } = selectedImageContext;
-  if (!selectedImage) {
+  const { selectedMedia, panelDismissed, setPanelDismissed } =
+    selectedImageContext;
+  if (!selectedMedia) {
     return null;
   }
-  const { src, alt, path } = selectedImage;
+  const { src, alt, path } = selectedMedia;
 
   if (!path || panelDismissed) {
     return null;
@@ -103,12 +101,16 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
 
   return (
     <Panel
-      key={selectedImage.path}
+      key={selectedMedia.path}
       closeButtonAriaLabel="Close"
       customWidth={'400px'}
-      headerText="Image settings"
+      headerText={
+        selectedMedia.type === MediaType.Img
+          ? 'Image settings'
+          : 'Video settings'
+      }
       isBlocking={false}
-      isOpen={!!selectedImage}
+      isOpen={!!selectedMedia}
       type={PanelType.custom}
       onDismiss={() => setPanelDismissed(true)}
       onRenderFooterContent={onRenderFooterContent}
@@ -127,9 +129,12 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
       <ImagePreview
         classNames={classNames}
         currentAlt={currentAlt}
-        currentSrc={currentSrc}
+        currentSrc={
+          selectedMedia.type === MediaType.Img
+            ? currentSrc
+            : getPreviewImgByLink(currentSrc)
+        }
         imageState={imageState}
-        selectedImage={selectedImage}
         setImageState={setImageState}
       />
     </Panel>
