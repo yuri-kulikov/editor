@@ -3,7 +3,7 @@ import Command from '@ckeditor/ckeditor5-core/src/command';
 
 import { SchemaItemName } from './MyMediaEditing';
 
-export default class UpdateSelectedImage extends Command {
+export default class UpdateSelectedMedia extends Command {
   refresh() {
     const selection = this.editor.model.document.selection;
     const element = selection.getSelectedElement();
@@ -55,6 +55,10 @@ export default class UpdateSelectedImage extends Command {
   }
 
   _isMyMediaElement(element) {
-    return !!element && element.name === SchemaItemName.MyImg;
+    return (
+      !!element &&
+      (element.name === SchemaItemName.MyImg ||
+        element.name === SchemaItemName.MyVideo)
+    );
   }
 }

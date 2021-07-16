@@ -1,14 +1,12 @@
 import { Icon, Image, ImageLoadState, IProcessedStyleSet, Label, Link } from '@fluentui/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ISelectedMediaPanelStyles } from '../SelectedMediaPanel.types';
 
 interface Props {
-  currentSrc: string | undefined;
-  currentAlt: string | undefined;
+  src: string | undefined;
+  alt: string | undefined;
   classNames: IProcessedStyleSet<ISelectedMediaPanelStyles>;
-  setImageState: React.Dispatch<React.SetStateAction<ImageLoadState>>;
-  imageState: ImageLoadState;
 }
 
 const renderError = (errorText, classNames) => {
@@ -20,27 +18,23 @@ const renderError = (errorText, classNames) => {
   );
 };
 
-export const ImagePreview: React.FC<Props> = ({
-  currentSrc,
-  currentAlt,
-  classNames,
-  setImageState,
-  imageState,
-}) => {
+export const ImagePreview: React.FC<Props> = ({ src, alt, classNames }) => {
+  const [imageState, setImageState] = useState(ImageLoadState.notLoaded);
+
   return (
     <>
-      <Label>Image Preview</Label>
+      <Label>Preview</Label>
       <Image
-        alt={currentAlt}
+        alt={alt}
         className={classNames.image}
-        src={currentSrc}
+        src={src}
         width={'fit-content'}
         onLoadingStateChange={setImageState}
         style={imageState === ImageLoadState.error ? { display: 'none' } : {}}
       />
 
       {imageState === ImageLoadState.loaded && (
-        <Link target={'_blank'} href={currentSrc}>
+        <Link target={'_blank'} href={src}>
           Open image in a new window
         </Link>
       )}

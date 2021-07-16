@@ -1,12 +1,4 @@
-import {
-  classNamesFunction,
-  ImageLoadState,
-  IProcessedStyleSet,
-  Panel,
-  PanelType,
-  PrimaryButton,
-  TextField,
-} from '@fluentui/react';
+import { classNamesFunction, IProcessedStyleSet, Panel, PanelType, PrimaryButton, TextField } from '@fluentui/react';
 import React, { useContext, useState } from 'react';
 
 import { EditorContext } from '@/context/Editor';
@@ -33,22 +25,20 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
   theme,
 }) => {
   const editor = useContext(EditorContext);
-  const selectedImageContext = useContext(SelectedMediaContext);
+  const selectedMediaContext = useContext(SelectedMediaContext);
 
   const [currentSrc, setCurrentSrc] = useState<string | undefined>(
-    selectedImageContext?.selectedMedia?.src,
+    selectedMediaContext?.selectedMedia?.src,
   );
   const [currentAlt, setCurrentAlt] = useState<string | undefined>(
-    selectedImageContext?.selectedMedia?.alt,
+    selectedMediaContext?.selectedMedia?.alt,
   );
 
-  const [imageState, setImageState] = useState(ImageLoadState.notLoaded);
-
-  if (!selectedImageContext) {
+  if (!selectedMediaContext) {
     return null;
   }
   const { selectedMedia, panelDismissed, setPanelDismissed } =
-    selectedImageContext;
+    selectedMediaContext;
   if (!selectedMedia) {
     return null;
   }
@@ -64,15 +54,15 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
       theme: theme!,
     });
 
-  const updateSelectedImage = ({ src, alt }: Partial<MyMedia>) => {
-    editor?.execute(MyMediaCommandName.UpdateSelectedImage, {
+  const updateSelectedMedia = ({ src, alt }: Partial<MyMedia>) => {
+    editor?.execute(MyMediaCommandName.UpdateSelectedMedia, {
       src,
       alt,
     });
   };
 
   const onSave = () => {
-    updateSelectedImage({
+    updateSelectedMedia({
       src: currentSrc,
       alt: currentAlt,
     });
@@ -94,7 +84,7 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
         }}
         className={cx(classNames.button, classNames.removeButton)}
       >
-        Remove Image
+        {selectedMedia.type === MediaType.Img ? 'Remove Image' : 'Remove Video'}
       </PrimaryButton>
     </div>
   );
@@ -123,19 +113,17 @@ export const SelectedMediaPanelBase: React.FC<ISelectedMediaPanelProps> = ({
       />
       <TextField
         label="Alt Text"
-        defaultValue={alt || ''}
+        defaultValue={alt}
         onChange={(_, alt) => setCurrentAlt(alt)}
       />
       <ImagePreview
         classNames={classNames}
-        currentAlt={currentAlt}
-        currentSrc={
-          selectedMedia.type === MediaType.Img
-            ? currentSrc
-            : getPreviewImgByLink(currentSrc)
+        alt={currentAlt}
+        src={
+          selectedMedia.type === MediaType.Video
+            ? getPreviewImgByLink(currentSrc)
+            : currentSrc
         }
-        imageState={imageState}
-        setImageState={setImageState}
       />
     </Panel>
   );

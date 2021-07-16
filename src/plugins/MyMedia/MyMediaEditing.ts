@@ -5,7 +5,7 @@ import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 
 import { InsertMyImgCommand, InsertMyVideoCommand } from './InsertMyMedia';
 import { myImgRenderer, myVideoRenderer } from './renderers';
-import UpdateSelectedImage from './UpdateSelectedImage';
+import UpdateSelectedMedia from './UpdateSelectedMedia';
 
 export enum SchemaItemName {
   MyImg = 'myImg',
@@ -13,7 +13,7 @@ export enum SchemaItemName {
 }
 
 export enum MyMediaCommandName {
-  UpdateSelectedImage = 'updateSelectedImage',
+  UpdateSelectedMedia = 'updateSelectedMedia',
   InsertMyImg = 'insertMyImg',
   InsertMyVideo = 'insertMyVideo',
 }
@@ -26,8 +26,8 @@ export default class MyMediaEditing extends Plugin {
     this._defineConverters();
 
     this.editor.commands.add(
-      MyMediaCommandName.UpdateSelectedImage,
-      new UpdateSelectedImage(this.editor),
+      MyMediaCommandName.UpdateSelectedMedia,
+      new UpdateSelectedMedia(this.editor),
     );
 
     this.editor.commands.add(

@@ -19,7 +19,7 @@ export const getStyles = (
         maxWidth: '100%',
       },
     ],
-    footerButtonsContainer: [{ display: 'flex', gap: '4px' }],
+    footerButtonsContainer: [{ display: 'flex', gap: '8px' }],
     button: [{ flexBasis: 0, flexGrow: 1 }],
     removeButton: [
       {
