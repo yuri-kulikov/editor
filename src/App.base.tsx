@@ -62,6 +62,7 @@ const AppBase: React.FC<IAppProps> = ({ styles, theme }) => {
                   setPanelDismissed(false);
                 },
                 onMyImageClick: () => setPanelDismissed(false),
+                onMyVideoClick: () => setPanelDismissed(false),
               },
             }}
             onReady={(editor: Editor) => {

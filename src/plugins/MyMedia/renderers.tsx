@@ -11,3 +11,12 @@ export const myImgRenderer = (domElement: Element, onClick?: () => void) => {
     domElement,
   );
 };
+
+export const myVideoRenderer = (domElement: Element, onClick?: () => void) => {
+  ReactDOM.render(
+    <div onClick={onClick}>
+      <Icon iconName="MSNVideos" styles={{ root: { fontSize: 36 } }} />
+    </div>,
+    domElement,
+  );
+};

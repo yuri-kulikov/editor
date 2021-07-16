@@ -32,14 +32,17 @@ export default class UpdateSelectedImage extends Command {
     if (
       !options ||
       (typeof options.src !== 'string' && typeof options.alt !== 'string')
-    )
-      {return;}
+    ) {
+      return;
+    }
     const editor = this.editor;
     const model = editor.model;
     const selection = this.editor.model.document.selection;
     const element = selection.getSelectedElement();
 
-    if (!this._isMyMediaElement(element) || !element) {return;}
+    if (!this._isMyMediaElement(element) || !element) {
+      return;
+    }
 
     model.change(writer => {
       if (typeof options.src === 'string') {
@@ -52,6 +55,6 @@ export default class UpdateSelectedImage extends Command {
   }
 
   _isMyMediaElement(element) {
-    return !!element && element.name === SchemaItemName.MyMedia;
+    return !!element && element.name === SchemaItemName.MyImg;
   }
 }

@@ -3,11 +3,12 @@ import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 
 import InsertMyMediaCommand from './InsertMyMedia';
-import { myImgRenderer } from './myImgRenderer';
+import { myImgRenderer, myVideoRenderer } from './renderers';
 import UpdateSelectedImage from './UpdateSelectedImage';
 
 export enum SchemaItemName {
-  MyMedia = 'myMedia',
+  MyImg = 'myImg',
+  MyVideo = 'myVideo',
 }
 
 export enum MyMediaCommandName {
@@ -50,7 +51,7 @@ export default class MyMediaEditing extends Plugin {
       }
 
       const node = selectedContent[0];
-      if (node.name !== SchemaItemName.MyMedia) {
+      if (node.name !== SchemaItemName.MyImg) {
         return;
       }
 
@@ -65,26 +66,30 @@ export default class MyMediaEditing extends Plugin {
   private _defineSchema() {
     const schema = this.editor.model.schema;
 
-    schema.register(SchemaItemName.MyMedia, {
+    schema.register(SchemaItemName.MyImg, {
       isLimit: true,
-      // Behaves like a self-contained object (e.g. an image).
       isObject: true,
-
-      // Allow in places where other blocks are allowed (e.g. directly in the root).
       allowWhere: '$block',
       allowAttributes: ['alt', 'src'],
+    });
+
+    schema.register(SchemaItemName.MyVideo, {
+      isLimit: true,
+      isObject: true,
+      allowWhere: '$block',
+      allowAttributes: ['alt', 'src', 'videoUrl'],
     });
   }
 
   private _defineConverters() {
-    // model: <myMedia src="" alt="" />
+    // model: <myImg src="" alt="" />
     // data: <img src="" alt="" class="myImg">
     // editing: <section class="myImg"><Icon /></section>
 
     const editor = this.editor;
     const conversion = editor.conversion;
 
-    // <myMedia> converters ((data) view → model)
+    // <myImg> converters ((data) view → model)
     conversion.for('upcast').elementToElement({
       view: {
         name: 'img',
@@ -95,15 +100,15 @@ export default class MyMediaEditing extends Plugin {
         const alt = viewElement.getAttribute('alt');
 
         return modelWriter.createElement(
-          SchemaItemName.MyMedia,
+          SchemaItemName.MyImg,
           cleanObject({ src, alt }),
         );
       },
     } as any);
 
-    // <myMedia> converters (model → data view)
+    // <myImg> converters (model → data view)
     conversion.for('dataDowncast').elementToElement({
-      model: SchemaItemName.MyMedia,
+      model: SchemaItemName.MyImg,
       view: (modelElement, { writer: viewWriter }) =>
         viewWriter.createEmptyElement(
           'img',
@@ -115,9 +120,9 @@ export default class MyMediaEditing extends Plugin {
         ),
     } as any);
 
-    // <myMedia> converters (model → editing view)
+    // <myImg> converters (model → editing view)
     conversion.for('editingDowncast').elementToElement({
-      model: SchemaItemName.MyMedia,
+      model: SchemaItemName.MyImg,
       view: (modelElement, { writer: viewWriter }) => {
         const section = viewWriter.createContainerElement('section', {
           class: 'myImg',
@@ -138,7 +143,69 @@ export default class MyMediaEditing extends Plugin {
           reactWrapper,
         );
 
-        return toWidget(section, viewWriter, { label: 'my widget' });
+        return toWidget(section, viewWriter, { label: 'Image' });
+      },
+    } as any);
+
+    // model: <myVideo src="" alt="" />
+    // data: <img src="" alt="" videoUrl="" class="myVideo">
+    // editing: <section class="myVideo"><Icon /></section>
+
+    // <myVideo> converters ((data) view → model)
+    conversion.for('upcast').elementToElement({
+      view: {
+        name: 'img',
+        classes: 'myImg',
+      },
+      model: (viewElement, { writer: modelWriter }) => {
+        const src = viewElement.getAttribute('src');
+        const alt = viewElement.getAttribute('alt');
+
+        return modelWriter.createElement(
+          SchemaItemName.MyVideo,
+          cleanObject({ src, alt }),
+        );
+      },
+    } as any);
+
+    // <myVideo> converters (model → data view)
+    conversion.for('dataDowncast').elementToElement({
+      model: SchemaItemName.MyVideo,
+      view: (modelElement, { writer: viewWriter }) =>
+        viewWriter.createEmptyElement(
+          'img',
+          cleanObject({
+            class: 'myImg',
+            src: modelElement.getAttribute('src'),
+            alt: modelElement.getAttribute('alt'),
+          }),
+        ),
+    } as any);
+
+    // <myVideo> converters (model → editing view)
+    conversion.for('editingDowncast').elementToElement({
+      model: SchemaItemName.MyVideo,
+      view: (modelElement, { writer: viewWriter }) => {
+        const section = viewWriter.createContainerElement('section', {
+          class: 'myVideo',
+        });
+
+        const onMyVideoClick = editor.config.get('myMedia').onMyVideoClick;
+
+        const reactWrapper = viewWriter.createRawElement(
+          'div',
+          {
+            class: 'myVideo__react-wrapper',
+          },
+          domElement => myVideoRenderer(domElement, onMyVideoClick),
+        );
+
+        viewWriter.insert(
+          viewWriter.createPositionAt(section, 0),
+          reactWrapper,
+        );
+
+        return toWidget(section, viewWriter, { label: 'Video' });
       },
     } as any);
   }

@@ -9,7 +9,7 @@ export default class InsertMyMediaCommand extends Command {
     model.change(writer => {
       const selection = model.document.selection;
 
-      const element = writer.createElement(SchemaItemName.MyMedia);
+      const element = writer.createElement(SchemaItemName.MyImg);
 
       writer.setSelection(
         model.insertContent(element, selection.getLastPosition(), 'after'),
@@ -22,7 +22,7 @@ export default class InsertMyMediaCommand extends Command {
     const selection = model.document.selection;
     const allowedIn = model.schema.findAllowedParent(
       selection.getFirstPosition() as any,
-      SchemaItemName.MyMedia,
+      SchemaItemName.MyImg,
     );
 
     this.isEnabled = allowedIn !== null;
