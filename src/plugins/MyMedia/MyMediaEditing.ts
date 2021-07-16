@@ -34,7 +34,6 @@ export default class MyMediaEditing extends Plugin {
     );
 
     const editor = this.editor;
-    // const view = editor.editing.view;
     const editorModel = editor.model;
     const modelDocument = editorModel.document;
 
@@ -147,23 +146,28 @@ export default class MyMediaEditing extends Plugin {
       },
     } as any);
 
-    // model: <myVideo src="" alt="" />
-    // data: <img src="" alt="" videoUrl="" class="myVideo">
+    // model: <myVideo src="" alt="" videoUrl="" />
+    // data: <img src="" alt="" previewImg="" class="myVideo">
     // editing: <section class="myVideo"><Icon /></section>
 
     // <myVideo> converters ((data) view → model)
     conversion.for('upcast').elementToElement({
       view: {
         name: 'img',
-        classes: 'myImg',
+        classes: 'myVideo',
       },
       model: (viewElement, { writer: modelWriter }) => {
         const src = viewElement.getAttribute('src');
         const alt = viewElement.getAttribute('alt');
+        const previewImg = viewElement.getAttribute('previewImg');
 
         return modelWriter.createElement(
           SchemaItemName.MyVideo,
-          cleanObject({ src, alt }),
+          cleanObject({
+            src: previewImg,
+            alt,
+            videoUrl: src,
+          }),
         );
       },
     } as any);
@@ -175,9 +179,10 @@ export default class MyMediaEditing extends Plugin {
         viewWriter.createEmptyElement(
           'img',
           cleanObject({
-            class: 'myImg',
-            src: modelElement.getAttribute('src'),
+            class: 'myVideo',
+            src: modelElement.getAttribute('videoUrl'),
             alt: modelElement.getAttribute('alt'),
+            previewImg: modelElement.getAttribute('src'),
           }),
         ),
     } as any);
