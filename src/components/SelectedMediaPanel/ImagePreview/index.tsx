@@ -9,15 +9,6 @@ interface Props {
   classNames: IProcessedStyleSet<ISelectedMediaPanelStyles>;
 }
 
-const renderError = (errorText, classNames) => {
-  return (
-    <div className={classNames.errorContainer}>
-      <Icon iconName={'ErrorBadge'} className={classNames.errorIcon} />
-      <span className={classNames.errorMessage}>{errorText}</span>
-    </div>
-  );
-};
-
 export const ImagePreview: React.FC<Props> = ({ src, alt, classNames }) => {
   const [imageState, setImageState] = useState(ImageLoadState.notLoaded);
 
@@ -38,8 +29,14 @@ export const ImagePreview: React.FC<Props> = ({ src, alt, classNames }) => {
           Open image in a new window
         </Link>
       )}
-      {imageState === ImageLoadState.error &&
-        renderError("Couldn't load the image", classNames)}
+      {imageState === ImageLoadState.error && (
+        <div className={classNames.errorContainer}>
+          <Icon iconName={'ErrorBadge'} className={classNames.errorIcon} />
+          <span className={classNames.errorMessage}>
+            Couldn't load the image
+          </span>
+        </div>
+      )}
     </>
   );
 };
