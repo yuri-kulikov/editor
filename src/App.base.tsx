@@ -3,7 +3,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { classNamesFunction, TextField, ThemeProvider } from '@fluentui/react';
 import React, { useRef, useState } from 'react';
 
-import { SelectedMediaPanel } from '@/components/SelectedMediaPanel';
+import { SelectedMediaPanel } from '@/components/SelectedMediaPanel/SelectedMediaPanel';
 import { EditorContext } from '@/context/Editor';
 import { SelectedMediaContext } from '@/context/SelectedMedia';
 import Editor from '@/Editor';

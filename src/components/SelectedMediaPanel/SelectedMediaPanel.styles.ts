@@ -42,5 +42,6 @@ export const getStyles = (
       color: theme.palette.red,
     },
     errorMessage: { color: theme.palette.red, fontWeight: 'bold' },
+    hidden: { display: 'none' },
   };
 };

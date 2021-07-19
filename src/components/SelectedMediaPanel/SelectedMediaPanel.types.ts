@@ -22,4 +22,5 @@ export interface ISelectedMediaPanelStyles {
   errorContainer?: IStyle;
   errorIcon?: IStyle;
   errorMessage?: IStyle;
+  hidden?: IStyle;
 }

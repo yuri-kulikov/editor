@@ -1,6 +1,8 @@
 import { Icon, Image, ImageLoadState, IProcessedStyleSet, Label, Link } from '@fluentui/react';
 import React, { useState } from 'react';
 
+import cx from '@/utils/classNames';
+
 import { ISelectedMediaPanelStyles } from '../SelectedMediaPanel.types';
 
 interface Props {
@@ -17,11 +19,12 @@ export const ImagePreview: React.FC<Props> = ({ src, alt, classNames }) => {
       {imageState !== ImageLoadState.notLoaded ? <Label>Preview</Label> : null}
       <Image
         alt={alt}
-        className={classNames.image}
+        className={cx(classNames.image, {
+          [classNames.hidden as string]: imageState === ImageLoadState.error,
+        })}
         src={src}
         width={'fit-content'}
         onLoadingStateChange={setImageState}
-        style={imageState === ImageLoadState.error ? { display: 'none' } : {}}
       />
 
       {imageState === ImageLoadState.loaded && (
