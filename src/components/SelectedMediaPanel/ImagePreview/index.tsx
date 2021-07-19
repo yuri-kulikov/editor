@@ -14,7 +14,7 @@ export const ImagePreview: React.FC<Props> = ({ src, alt, classNames }) => {
 
   return (
     <>
-      <Label>Preview</Label>
+      {imageState !== ImageLoadState.notLoaded ? <Label>Preview</Label> : null}
       <Image
         alt={alt}
         className={classNames.image}
